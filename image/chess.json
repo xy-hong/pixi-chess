@@ -1,0 +1,304 @@
+{
+	"frames": {
+		"wp": {
+			"frame": {
+				"x": 0,
+				"y": 0,
+				"w": 32,
+				"h": 64
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 32,
+				"h": 64
+			},
+			"sourceSize": {
+				"w": 32,
+				"h": 64
+			},
+			"anchor": {
+				"x": 0,
+				"y": 0.5
+			}
+		},
+		"wr": {
+			"frame": {
+				"x": 32,
+				"y": 0,
+				"w": 32,
+				"h": 64
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 32,
+				"y": 0,
+				"w": 32,
+				"h": 64
+			},
+			"sourceSize": {
+				"w": 32,
+				"h": 64
+			},
+			"anchor": {
+				"x": 0,
+				"y": 0.5
+			}
+		},
+		"wn": {
+			"frame": {
+				"x": 64,
+				"y": 0,
+				"w": 32,
+				"h": 64
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 64,
+				"y": 0,
+				"w": 32,
+				"h": 64
+			},
+			"sourceSize": {
+				"w": 32,
+				"h": 64
+			},
+			"anchor": {
+				"x": 0,
+				"y": 0.5
+			}
+		},
+		"wb": {
+			"frame": {
+				"x": 96,
+				"y": 0,
+				"w": 32,
+				"h": 64
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 96,
+				"y": 0,
+				"w": 32,
+				"h": 64
+			},
+			"sourceSize": {
+				"w": 187,
+				"h": 324
+			},
+			"anchor": {
+				"x": 0,
+				"y": 0.5
+			}
+		},
+		"wq": {
+			"frame": {
+				"x": 128,
+				"y": 0,
+				"w": 32,
+				"h": 64
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 128,
+				"y": 0,
+				"w": 32,
+				"h": 64
+			},
+			"sourceSize": {
+				"w": 32,
+				"h": 64
+			},
+			"anchor": {
+				"x": 0,
+				"y": 0.5
+			}
+		},
+		"wk": {
+			"frame": {
+				"x": 160,
+				"y": 0,
+				"w": 32,
+				"h": 64
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 160,
+				"y": 0,
+				"w": 32,
+				"h": 64
+			},
+			"sourceSize": {
+				"w": 32,
+				"h": 64
+			},
+			"anchor": {
+				"x": 0,
+				"y": 0.5
+			}
+		},
+	
+		"bp": {
+			"frame": {
+				"x": 0,
+				"y": 64,
+				"w": 32,
+				"h": 64
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 64,
+				"w": 32,
+				"h": 64
+			},
+			"sourceSize": {
+				"w": 32,
+				"h": 64
+			},
+			"anchor": {
+				"x": 0,
+				"y": 0.5
+			}
+		},
+		"br": {
+			"frame": {
+				"x": 32,
+				"y": 64,
+				"w": 32,
+				"h": 64
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 32,
+				"y": 64,
+				"w": 32,
+				"h": 64
+			},
+			"sourceSize": {
+				"w": 32,
+				"h": 64
+			},
+			"anchor": {
+				"x": 0,
+				"y": 0.5
+			}
+		},
+		"bn": {
+			"frame": {
+				"x": 64,
+				"y": 64,
+				"w": 32,
+				"h": 64
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 64,
+				"y": 64,
+				"w": 32,
+				"h": 64
+			},
+			"sourceSize": {
+				"w": 32,
+				"h": 64
+			},
+			"anchor": {
+				"x": 0,
+				"y": 0.5
+			}
+		},
+		"bb": {
+			"frame": {
+				"x": 96,
+				"y": 64,
+				"w": 32,
+				"h": 64
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 96,
+				"y": 64,
+				"w": 32,
+				"h": 64
+			},
+			"sourceSize": {
+				"w": 187,
+				"h": 324
+			},
+			"anchor": {
+				"x": 0,
+				"y": 0.5
+			}
+		},
+		"bq": {
+			"frame": {
+				"x": 128,
+				"y": 64,
+				"w": 32,
+				"h": 64
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 128,
+				"y": 64,
+				"w": 32,
+				"h": 64
+			},
+			"sourceSize": {
+				"w": 32,
+				"h": 64
+			},
+			"anchor": {
+				"x": 0,
+				"y": 0.5
+			}
+		},
+		"bk": {
+			"frame": {
+				"x": 160,
+				"y": 64,
+				"w": 32,
+				"h": 64
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 160,
+				"y": 64,
+				"w": 32,
+				"h": 64
+			},
+			"sourceSize": {
+				"w": 32,
+				"h": 64
+			},
+			"anchor": {
+				"x": 0,
+				"y": 0.5
+			}
+		}
+		
+	},
+	"meta": {
+		"version": "1.0",
+		"image": "chess.png",
+		"format": "RGBA8888",
+		"size": {
+			"w": 192,
+			"h": 128
+		},
+		"scale": "1"
+	}
+}
