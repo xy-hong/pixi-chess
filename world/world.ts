@@ -1,16 +1,16 @@
 import { Chess, ChessInstance, Move, PieceType, Square } from "chess.js";
 import { Application, Graphics, Spritesheet, Text } from "pixi.js";
 import PieceSprite from "../entity/PieceSprite";
-import globalState from "../global";
 import { PieceColor } from "../types";
-import { toIndex } from "../utils/mapping";
+import { positionMapping } from "../utils/mapping";
+import { EvPieceSelected } from "./events/piece";
+import { HighlightManager } from "./highLightManager";
 
 const SCALE = 1;
 const PADDING = 32 * SCALE;
 
 const BACKGROUND_ZINDEX = 0;
 const SQURE_ZINDEX = 1;
-const HIGHLIGHT_ZINDEX = 2;
 
 
 
@@ -24,20 +24,34 @@ export function getWorld() {
 }
 
 
-class World {
+
+export class World {
     app: Application;
     chess: ChessInstance;
-    aboardMap: Map<Square, PieceSprite>;
+    hlManager: HighlightManager;
+    state: {
+        turn: PieceColor,
+        lastMove: { from: Square, to: Square; } | { from: null, to: null; },
+    };
 
 
     constructor() {
         this.app = initApp();
         this.chess = new Chess();
-        this.aboardMap = new Map();
+        this.hlManager = new HighlightManager(PADDING);
+        this.state = {
+            turn: 'w',
+            lastMove: { from: null, to: null }
+        };
+    }
+
+    changeTurn() {
+        this.state.turn = this.chess.turn();
     }
 
     setUp() {
         const initBoard = this.chess.board();
+        this.registerEvents();
         this.app.loader
             .add("image/chess.json")
             .add("image/chess_active.json")
@@ -65,12 +79,12 @@ class World {
                 if (cell) {
                     // load sprite
                     const sprite = createPieceSprite(sheet, cell.type, cell.color, i, j, this.chess);
+                    // TODO move these code  snippets to piece's constructor
                     const { x, y } = positionMapping(cell.square);
                     sprite.x = x + padding;
                     sprite.y = y + padding;
 
                     this.app.stage.addChild(sprite);
-                    this.aboardMap.set(cell.square, sprite);
                 }
             }
         }
@@ -132,6 +146,12 @@ class World {
         }
     }
 
+    private registerEvents() {
+        this.app.stage.on('evPieceSelected', (ev: EvPieceSelected, msg) => {
+            this.hlManager.changeSelected(ev.piece, ev.moveablePos);
+        });
+    }
+
 }
 
 function initApp(): Application {
@@ -155,81 +175,6 @@ function createPieceSprite(sheet: Spritesheet, pieceType: PieceType, pieceColor:
     const name = `${pieceColor}${pieceType}`;
     const texture = sheet.textures[name];
     const sprite = new PieceSprite(texture, name, pieceColor, i, j, chess);
-    sprite.addListener('click', (e) => pieceOnclick(e, sprite));
     return sprite;
 }
 
-// calculate the position of the piece
-function positionMapping(square: Square) {
-    const { i, j } = toIndex(square);
-    const y = i * 32;
-    const x = j * 32;
-    return { x, y };
-}
-
-// pieces onClick 
-function pieceOnclick(e, piece: PieceSprite) {
-    if (globalState.turn !== piece.color) {
-        return;
-    }
-    selectedPiece = piece;
-    selectedPiece.activeState();
-    const p = toSquare(selectedPiece.i, selectedPiece.j);
-    const aviliablePosstions = chess.moves({ square: p, verbose: true });
-    // todo draw a cycle on aviliable square
-    console.log('onClick ', piece.name, p);
-    console.log('aviliable postions', chess.moves({ square: p }));
-    const highlights: Graphics[] = [];
-    for (const move of aviliablePosstions) {
-        const { x, y } = positionMapping(move.to);
-        const highlight = new Graphics();
-        highlight.beginFill(0xfa66a5);
-        highlight.drawRect(x + padding, y + padding, 32, 32);
-        highlight.alpha = 0.5;
-        highlight.zIndex = HIGHLIGHT_ZINDEX;
-        highlight.interactive = true;
-        highlight.buttonMode = true;
-        highlight.addListener('click', () => {
-            if (pieceMove(piece, move.to)) {
-                globalState.turn = chess.turn();
-                globalState.lastMove = { from: p, to: move.to };
-                console.log('move to ', move.to);
-                piece.deactiveState();
-
-                // remove all highlight
-                for (const highlight of highlights) {
-                    app.stage.removeChild(highlight);
-                    highlight.destroy();
-                }
-
-            }
-        });
-
-        app.stage.addChild(highlight);
-        highlights.push(highlight);
-    }
-
-    console.log('highlights', chess.moves({ square: p }));
-}
-
-// pieces move
-function pieceMove(piece: PieceSprite, to: Square): Move | null {
-    const fromSqure = toSquare(piece.i, piece.j);
-    const result = chess.move({ from: fromSqure, to: to });
-    console.log('move result', result);
-    if (result) {
-        // if capture piece
-        if (result.captured) {
-            const capturedPiece = aboardMap.get(to);
-            if (capturedPiece) {
-                app.stage.removeChild(capturedPiece);
-                aboardMap.delete(to);
-            }
-        }
-        piece.moveToSquare(to);
-    } else {
-        console.log(`${fromSqure} can't move to ${to}`);
-    }
-
-    return result;
-}
