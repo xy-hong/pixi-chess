@@ -21,9 +21,6 @@ class PieceSprite extends Sprite {
         this.name = name;
         this.zIndex = 100;
 
-        // makes piece click able
-        this.interactive = true;
-        this.buttonMode = true;
         this.hitArea = new Rectangle(0, 0, 32, 32);
 
 
@@ -38,18 +35,18 @@ class PieceSprite extends Sprite {
     moveTo(dst: Square) {
         const fromSq = this.toSquare();
         const result = this.chess.move({ from: fromSq, to: dst });
-        console.debug('move result', result);
+        console.info('move result', result);
         if (result) {
 
             if (result.captured) {
                 // TODO handle captured 
             }
-            const { i, j } = toIndex(dst);
-            this.i = i;
-            this.j = j;
-            this.setZIndex(i);
-            this.x = j * 32 + 32;
-            this.y = i * 32 + 32;
+            // const { i, j } = toIndex(dst);
+            // this.i = i;
+            // this.j = j;
+            // this.setZIndex(i);
+            // this.x = j * 32 + 32;
+            // this.y = i * 32 + 32;
         } else {
             console.log(`${fromSq} can't move to ${dst}`);
         }
@@ -57,9 +54,6 @@ class PieceSprite extends Sprite {
     }
 
     onClick() {
-        if (getWorld().state.turn !== this.color) {
-            return;
-        }
         this.showAvailablePos();
     }
 

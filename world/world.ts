@@ -29,8 +29,9 @@ export class World {
     app: Application;
     chess: ChessInstance;
     hlManager: HighlightManager;
+    chessSheet: Spritesheet;
+    allPieces: PieceSprite[] = [];
     state: {
-        turn: PieceColor,
         lastMove: { from: Square, to: Square; } | { from: null, to: null; },
     };
 
@@ -39,14 +40,12 @@ export class World {
         this.app = initApp();
         this.chess = new Chess();
         this.hlManager = new HighlightManager(PADDING);
+        this.wPieces = new Map();
+        this.bPieces = new Map();
         this.state = {
             turn: 'w',
             lastMove: { from: null, to: null }
         };
-    }
-
-    changeTurn() {
-        this.state.turn = this.chess.turn();
     }
 
     setUp() {
@@ -56,10 +55,10 @@ export class World {
             .add("image/chess.json")
             .add("image/chess_active.json")
             .load(() => {
-                const chessSheet = this.app.loader.resources["image/chess.json"].spritesheet;
+                this.chessSheet = this.app.loader.resources["image/chess.json"].spritesheet!!;
                 // const activeChessSheet = this.app.loader.resources["image/chess_active.json"].spritesheet;
                 this.drawChessBoard(PADDING, SCALE);
-                this.setupPiece(initBoard, chessSheet!!, PADDING);
+                this.setupPiece(initBoard);
                 this.setupSquareLabel(PADDING, SCALE);
             });
 
@@ -71,19 +70,42 @@ export class World {
 
 
     }
-    private setupPiece(position, sheet: Spritesheet, padding: number, scale = 1) {
+
+    private destoryAllPieces() {
+        for (const piece of this.allPieces) {
+            this.app.stage.removeChild(piece);
+        }
+    }
+
+    public renderPieces() {
+        const position = this.chess.board();
+        this.destoryAllPieces();
+        this.setupPiece(position);
+    }   
+
+    private setupPiece(position, padding: number=PADDING, scale = 1) {
         console.log(position);
+        const turn = this.chess.turn();
+        console.log(turn);
         for (let i = 0; i < 8; i++) {
             for (let j = 0; j < 8; j++) {
                 const cell = position[i][j];
                 if (cell) {
                     // load sprite
-                    const sprite = createPieceSprite(sheet, cell.type, cell.color, i, j, this.chess);
+                    const sprite = this.createPieceSprite(cell.type, cell.color, i, j, this.chess);
+                    if(cell.color == turn) {
+                        sprite.interactive = true;
+                        sprite.buttonMode = true
+                    }else{
+                        sprite.interactive = false;
+                    }
+                    
                     // TODO move these code  snippets to piece's constructor
                     const { x, y } = positionMapping(cell.square);
                     sprite.x = x + padding;
                     sprite.y = y + padding;
 
+                    this.allPieces.push(sprite);
                     this.app.stage.addChild(sprite);
                 }
             }
@@ -152,7 +174,15 @@ export class World {
         });
     }
 
+    // get piece sprite
+    public createPieceSprite(pieceType: PieceType, pieceColor: PieceColor, i: number, j: number, chess: ChessInstance): PieceSprite {
+        const name = `${pieceColor}${pieceType}`;
+        const texture = this.chessSheet.textures[name];
+        const sprite = new PieceSprite(texture, name, pieceColor, i, j, chess);
+        return sprite;
+    }
 }
+
 
 function initApp(): Application {
     //Construct a Pixi.JS application
@@ -170,11 +200,5 @@ function initApp(): Application {
     return app;
 }
 
-// get piece sprite
-function createPieceSprite(sheet: Spritesheet, pieceType: PieceType, pieceColor: PieceColor, i: number, j: number, chess: ChessInstance): PieceSprite {
-    const name = `${pieceColor}${pieceType}`;
-    const texture = sheet.textures[name];
-    const sprite = new PieceSprite(texture, name, pieceColor, i, j, chess);
-    return sprite;
-}
+
 

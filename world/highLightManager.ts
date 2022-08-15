@@ -9,17 +9,18 @@ const HIGHLIGHT_ZINDEX = 2;
 export class HighlightManager {
     private selected: PieceSprite;
     private highlights: Graphics[];
+    private lastMoveHighLight: Graphics[];
     constructor(
         private padding: number,
     ) {
         this.highlights = [];
+        this.lastMoveHighLight = [];
     }
 
     changeSelected(piece: PieceSprite, moveablePos: Move[]) {
         if (this.selected === piece) {
             return;
         }
-        console.log("hls: ", this.highlights)
         this.cleanHiglights();
         const world = getWorld();
         this.selected = piece;
@@ -29,9 +30,14 @@ export class HighlightManager {
             const hl = this.newHighLight(x, y);
             hl.addListener('click', () => {
                 if (piece.moveTo(move.to)) {
-                    world.changeTurn();
+
+                    if(world.chess.game_over()) {
+                        alert("Game Over");
+                    }
+
+                    world.renderPieces();
                     world.state.lastMove = { from: prePos, to: move.to };
-                    console.debug('move to ', move.to);
+                    console.info('move to ', move.to);
                     piece.deactiveState();
                     this.cleanHiglights();
                 }
@@ -40,7 +46,7 @@ export class HighlightManager {
             world.app.stage.addChild(hl);
             this.highlights.push(hl);
         }
-        console.log('highlights', world.chess.moves({ square: prePos }));
+        console.log('highlights', world.chess.moves({ square: prePos, verbose: true }));
     }
 
     private cleanHiglights() {
@@ -49,6 +55,12 @@ export class HighlightManager {
             h.destroy();
         }
         this.highlights = [];
+    }
+
+    private cleanLastMoveHighLight() {
+        for(const hl of this.lastMoveHighLight) {
+            hl.destroy();
+        }
     }
 
     private newHighLight(x: number, y: number): Graphics {
