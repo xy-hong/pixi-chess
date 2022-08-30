@@ -12,9 +12,6 @@ const PADDING = 32 * SCALE;
 const BACKGROUND_ZINDEX = 0;
 const SQURE_ZINDEX = 1;
 
-
-
-
 let world: World;
 export function getWorld() {
     if (!world) {
@@ -22,8 +19,6 @@ export function getWorld() {
     }
     return world;
 }
-
-
 
 export class World {
     app: Application;
@@ -35,15 +30,11 @@ export class World {
         lastMove: { from: Square, to: Square; } | { from: null, to: null; },
     };
 
-
     constructor() {
         this.app = initApp();
         this.chess = new Chess();
         this.hlManager = new HighlightManager(PADDING);
-        this.wPieces = new Map();
-        this.bPieces = new Map();
         this.state = {
-            turn: 'w',
             lastMove: { from: null, to: null }
         };
     }
@@ -67,8 +58,6 @@ export class World {
             // use delta to create frame-independent transform
             // container.rotation -= 0.01 * delta;
         });
-
-
     }
 
     private destoryAllPieces() {

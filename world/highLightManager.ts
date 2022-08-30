@@ -17,19 +17,22 @@ export class HighlightManager {
         this.lastMoveHighLight = [];
     }
 
-    changeSelected(piece: PieceSprite, moveablePos: Move[]) {
+    changeSelected(piece: PieceSprite ) {
         if (this.selected === piece) {
             return;
         }
-        this.cleanHiglights();
         const world = getWorld();
+        const moveablePos = world.chess.moves({square: piece.toSquare(), verbose: true})
+        this.cleanHiglights();
         this.selected = piece;
         const prePos = piece.toSquare();
         for (const move of moveablePos) {
             const { x, y } = positionMapping(move.to);
             const hl = this.newHighLight(x, y);
             hl.addListener('click', () => {
-                if (piece.moveTo(move.to)) {
+                const from = piece.toSquare()
+                const moveResult = world.chess.move({from: from, to: move.to})
+                if (moveResult) {
 
                     if(world.chess.game_over()) {
                         alert("Game Over");
