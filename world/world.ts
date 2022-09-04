@@ -56,17 +56,11 @@ export class World {
                 this.drawSquareLabel();
             });
 
-        this.test()
         // Listen for animate update
         this.app.ticker.add((delta) => {
             // use delta to create frame-independent transform
             // container.rotation -= 0.01 * delta;
         });
-    }
-
-    private test() {
-        this.renderGameOver()
-        button
     }
 
     private initApp(): Application {
