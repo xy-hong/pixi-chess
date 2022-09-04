@@ -1,5 +1,5 @@
 import PieceSprite from "../../entity/PieceSprite";
 
-export interface EvPieceSelected {
+export interface PieceSelectedEvent {
     piece: PieceSprite;
 }

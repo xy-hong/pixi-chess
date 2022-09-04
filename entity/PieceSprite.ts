@@ -1,7 +1,6 @@
-import { ChessInstance, Square } from "chess.js";
 import { Rectangle, Sprite, Texture } from "pixi.js";
 import { PieceColor } from "../types";
-import { EvPieceSelected } from "../world/events/piece";
+import { PieceSelectedEvent } from "../world/events/piece";
 import { getWorld } from "../world/world";
 
 class PieceSprite extends Sprite {
@@ -25,14 +24,9 @@ class PieceSprite extends Sprite {
     }
 
     private showAvailablePos() {
-        getWorld().app.stage.emit('evPieceSelected', {piece: this} as EvPieceSelected);
+        getWorld().app.stage.emit('pieceSelectedEvent', {piece: this} as PieceSelectedEvent);
     }
 
-    toSquare(): Square {
-        const a = String.fromCharCode(this.j + 97);
-        const b = 8 - this.i;
-        return (a + b) as Square;
-    }
 
     setZIndex(i: number) {
         this.zIndex = (i + 1) * 10;

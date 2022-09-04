@@ -12,3 +12,9 @@ export function positionMapping(square: Square) {
     const x = j * 32;
     return { x, y };
 }
+
+export function toSquare(i: number, j: number): Square {
+        const a = String.fromCharCode(j + 97);
+        const b = 8 - i;
+        return (a + b) as Square;
+}
